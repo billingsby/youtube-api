@@ -1,79 +1,95 @@
 $(function() {
+
   $('#search-term').submit(function(event) {
     event.preventDefault();
-    var searchTerm = $('#query').val();
-    getRequest(searchTerm);
+    searchInput = $('#query').val();
+    getRequest(searchInput);
+    $('#moreResults').toggle(); 
+    $('#previousResults').toggle(); 
+  });
+
+  $('#moreResults').click(function(event) {
+    event.preventDefault();
+    moreResults(searchInput);
     
   });
 
-$('#search-results').on('click', '#tube', function() {
-                      $.fancybox({
-                        'padding'        : 0,
-                        'autoScale'      : false,
-                        'transitionIn'   : 'none',
-                        'transitionOut'  : 'none',
-                        'title'          : this.title,
-                        'width'          : 680,
-                        'height'         : 495,
-                        'href'           : this.href.replace(new RegExp("watch\\?v=", "i"), 'v/'),
-                        'type'           : 'swf',
-                        'swf'            : {
-                        'wmode'              : 'transparent',
-                        'allowfullscreen'    : 'true'
-                        }
-                    });
-                return false;
-            });
-});
-  
-$('#foo').bind('click', function() {
-  alert($(this).text());
-});
-            
-$('#foo').trigger('click');
+  $('#previousResults').click(function(event) {
+    event.preventDefault();
+    previousResults(searchInput);
+    
+  });
 
 
+});
 
 // Global Variables
-var limit = 9;
-var grabItems = [];
+  var limit = 9;
+  var grabItems = [];
+  var next = "";
+  var previous = "";
+  var searchInput = "";
+  var url = 'https://www.googleapis.com/youtube/v3/search';
 
-function getRequest(searchTerm) {
-  var params = {
+ var params = {
     part: 'snippet',
-    q: searchTerm,
-    chart: 'mostPopular',
+    order: 'relevance',
     maxResults: limit,
     key:'AIzaSyCljHHBsg2XfhNuAE_Vc_0X5Z3qZhB6pVA'
   };
-  url = 'https://www.googleapis.com/youtube/v3/search';
 
+
+
+function getRequest(searchInput) {
+  params.q = searchInput;
+  console.log(params)
   $.getJSON(url, params, function(data) {
+    next = data.nextPageToken;
     console.log(data);
     grabItems = data.items;
-    console.log(grabItems);
     getResults(grabItems);
   });
   
 }
 
+function moreResults(searchInput) {
+  params.pageToken = next;
+  $('#search-results').text("");
+  $.getJSON(url, params, function(data) {
+    previous = data.prevPageToken;
+    grabItems = data.items;
+    next = data.nextPageToken;
+    getResults(grabItems);
+
+  });
+}
+
+function previousResults(searchInput) {
+  params.pageToken = previous;
+  $('#search-results').text("");
+  $.getJSON(url, params, function(data) {
+    grabItems = data.items;
+    next = data.nextPageToken;
+    getResults(grabItems);
+
+  });
+}
 
 
 function getResults(data){
   var html = "";
     for(var i = 0; i < limit; i++){
       var title = data[i].snippet.title;
-      console.log(title);
       var thumb = data[i].snippet.thumbnails.medium.url;
       var video_id = data[i].id.videoId;
-      console.log(video_id);
+      var description = data[i].snippet.description;
       var video_url = 'https://www.youtube.com/watch?v=' + video_id;
       var link = '<a id=\"tube\" href=\"' + video_url + '\"><img src=\"' + thumb + '\"></a>';
-      html += '<div class=\"item\">' + '<h3>' + title + '</h3>' + link + '</div>';  
-
+      html += '<div class=\"item\">' + '<h3>' + title + '</h3>' + link + '<div class=\"description\">'+ description + '</div></div>';  
     }   
-    console.log(html);
-    $('#search-results').html(html);       
+
+    $('#search-results').html(html); 
+        
   }  
 
-  
+

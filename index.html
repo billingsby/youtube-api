@@ -2,18 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Document</title>
+  <title>Get YouTube Videos</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <h1>Find YouTube Videos</h1>
-  <form id="search-term">
-    <input type= "text" id="query"></input>
-    <button type="submit">Click Me!</button>
-  </form>
+  <header class="search-head">
+    <div class="content">
+      <h1>Find <img class="logo" src="images/YouTube-logo.png" alt="YouTube"> Videos</h1>
+      <form id="search-term">
+        <input type= "text" id="query"></input>
+        <button type="submit">Click Me!</button>
+      </form>
+    </div>
+  </header>
 
-  <div id="search-results">
-  
-  
+  <div class="display-results">
+    <div class="content" id=search-results>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="right">
+    <button type="button" class="hidden" id="moreResults" >More Results</button>
+    </div>
+    <div class="left">
+    <button type="button" class="hidden" id="previousResults" >Previous Results</button>
+    </div>
   </div>
 
   <script src="http://code.jquery.com/jquery.min.js"></script>  
