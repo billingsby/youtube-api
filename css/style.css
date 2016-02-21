@@ -1,0 +1,74 @@
+html {
+  box-sizing: border-box;
+  
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.content {
+  margin: 0 auto;
+  width: 90%;
+}
+
+.hidden {
+  display: none;
+}
+
+.search-head {
+  text-align: center;
+}
+
+.search-head h1 {
+  margin-bottom: 2em;
+}
+
+.logo {
+  display: inline;
+  width: 4em;
+  position: relative;
+  top: 15px;
+}
+
+.item {
+  height: 350px;
+  width: 33%;
+  margin: 1em 0 1em .2em;
+  padding: 0 .5em;
+  text-align: center;
+  background-color: #f7f7f7;
+  float:left;
+  display: inline;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.item h3 {
+  height: 40px;
+}
+
+.item .description {
+  margin-top: .3em;
+  overflow: hidden;
+  height: 75px;
+  background-color: white;
+  padding: .5em;
+  text-overflow: ellipsis;
+  font-size: .8em;
+}
+
+.item .description p {
+  font-size: .5em;
+}
+
+.right {
+  display: inline;
+  float:right;
+  margin-bottom: 4em;
+}
+.left {
+  display: inline;
+  float: left;
+  margin-bottom: 4em;
+}
