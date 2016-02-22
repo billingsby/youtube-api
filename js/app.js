@@ -20,6 +20,36 @@ $(function() {
     
   });
 
+  $(document).on('click', '.lightbox-trigger', function(e) {
+    e.preventDefault();
+    var image_href = $(this).attr("href");
+
+    if ($('#lightbox').length > 0) { // #lightbox exists
+      
+      //place href as img src value
+      $('#content').html('<iframe id="video" src="' + image_href +'?rel=0&autoplay=1"></iframe>');
+      $('#lightbox').show('fast');
+    } else { //#lightbox does not exist - create and insert (runs 1st time only)
+      
+      //create HTML markup for lightbox window
+      var lightbox = 
+      '<div id="lightbox">' +
+        '<div id="content">' + //insert clicked link's href into img src
+          '<iframe id="video" src="' + image_href +'?rel=0&autoplay=1"></iframe>' +
+        '</div>' +  
+      '</div>';
+        
+      //insert lightbox HTML into page
+      $('body').prepend(lightbox);
+    }
+    
+  });
+  
+  //Click anywhere on the page to get rid of lightbox window
+  $(document).on('click', '#lightbox', function() { //must use live, as the lightbox element is inserted into the DOM
+    $('#video').attr('src', '');
+    $('#lightbox').hide();
+  });
 
 });
 
@@ -83,13 +113,11 @@ function getResults(data){
       var thumb = data[i].snippet.thumbnails.medium.url;
       var video_id = data[i].id.videoId;
       var description = data[i].snippet.description;
-      var video_url = 'https://www.youtube.com/watch?v=' + video_id;
-      var link = '<a id=\"tube\" href=\"' + video_url + '\"><img src=\"' + thumb + '\"></a>';
-      html += '<div class=\"item\">' + '<h3>' + title + '</h3>' + link + '<div class=\"description\">'+ description + '</div></div>';  
+      var video_url = 'https://www.youtube.com/embed/' + video_id;
+      var link = '<a class="lightbox-trigger" id="tube" href="' + video_url + '"><img src="' + thumb + '"></a>';
+      html += "<div class='item'>" + '<h3>' + title + '</h3>' + link + '<div class=\"description\">'+ description + '</div></div>';  
     }   
 
     $('#search-results').html(html); 
-        
-  }  
-
+}  
 
